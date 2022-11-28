@@ -11,16 +11,12 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      chartOptions: {
+      chartOptions: this.props.chartOptions || {
         chart: {
-          events: {
-            load() {
-              alert(window.Highcharts.version);
-            },
-          },
+          type: 'column',
         },
         title: {
-          text: 'Default title',
+          text: 'Chart Title',
         },
         series: [
           {
@@ -31,18 +27,18 @@ export default class App extends React.Component {
     };
   }
 
-  chartUpdate() {
-    this.setState({
-      chartOptions: {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'Updated chart',
-        },
-      },
-    });
-  }
+  //   chartUpdate() {
+  //     this.setState({
+  //       chartOptions: {
+  //         chart: {
+  //           type: 'column',
+  //         },
+  //         title: {
+  //           text: 'Updated chart',
+  //         },
+  //       },
+  //     });
+  //   }
 
   render() {
     return (
@@ -55,12 +51,12 @@ export default class App extends React.Component {
           //useSSL={true}
           modules={modules}
         />
-        <Button
+        {/* <Button
           onPress={this.chartUpdate.bind(this)}
           style={styles.button}
           title="Chart update"
           color="#000"
-        />
+        /> */}
       </View>
     );
   }
