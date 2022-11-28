@@ -11,7 +11,7 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      chartOptions: this.props.chartOptions || {
+      chartOptions: this.props.options || {
         chart: {
           type: 'column',
         },
@@ -27,19 +27,6 @@ export default class App extends React.Component {
     };
   }
 
-  //   chartUpdate() {
-  //     this.setState({
-  //       chartOptions: {
-  //         chart: {
-  //           type: 'column',
-  //         },
-  //         title: {
-  //           text: 'Updated chart',
-  //         },
-  //       },
-  //     });
-  //   }
-
   render() {
     return (
       <View style={styles.container}>
@@ -51,12 +38,6 @@ export default class App extends React.Component {
           //useSSL={true}
           modules={modules}
         />
-        {/* <Button
-          onPress={this.chartUpdate.bind(this)}
-          style={styles.button}
-          title="Chart update"
-          color="#000"
-        /> */}
       </View>
     );
   }
@@ -66,6 +47,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
+    width: '100%',
   },
   button: {
     justifyContent: 'center',
