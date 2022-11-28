@@ -1,1 +1,2 @@
-module.exports = require('./src/HighchartsReactNative.js')
+const HighChart = require('./src/HighchartsReactNative.js');
+export default HighChart;
