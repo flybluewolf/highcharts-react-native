@@ -306,8 +306,8 @@ export default class HighchartsReactNative extends React.PureComponent {
             allowFileAccessFromFileURLs={true}
             startInLoadingState={this.props.loader}
             style={this.props.webviewStyles}
-            androidHardwareAccelerationDisabled
-            {...this.props.webviewProps}
+            // androidHardwareAccelerationDisabled
+            // {...this.props.webviewProps}
           />
         </View>
       );
