@@ -37,6 +37,7 @@ export default class App extends React.Component {
           devPath={'192.168.0.1:12345'}
           useSSL={true}
           modules={modules}
+          onMessage={message => this.props.onMessage(message)}
         />
       </View>
     );
