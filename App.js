@@ -3,7 +3,7 @@ import { StyleSheet, View, Button } from 'react-native';
 import HighchartsReactNative from './dist';
 
 const modules = [
-  //'solid-gauge'
+  'solid-gauge'
 ];
 
 export default class App extends React.Component {
