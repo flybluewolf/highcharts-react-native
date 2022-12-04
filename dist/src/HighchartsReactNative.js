@@ -107,7 +107,7 @@ export default class HighchartsReactNative extends React.PureComponent {
       height: userStyles.height || win.height,
       chartOptions: props.options,
       useCDN: props.useCDN || false,
-      modules: props.modules || [],
+      modules: props.modules || ['solid-gauge'],
       setOptions: props.setOptions || {},
       renderedOnce: false,
       hcModulesReady: false,
@@ -162,6 +162,9 @@ export default class HighchartsReactNative extends React.PureComponent {
       const scriptsPath = this.state.useCDN ? httpProto.concat(cdnPath) : path;
       const setOptions = this.state.setOptions;
       const runFirst = `
+                window.postMessage = function(${this.props.data}) {
+                  window.ReactNativeWebView.postMessage(${this.props.data});
+                };
                 window.data = \"${this.props.data ? this.props.data : null}\";
                 var modulesList = ${JSON.stringify(this.state.modules)};
                 var readable = ${JSON.stringify(stringifiedScripts)}
