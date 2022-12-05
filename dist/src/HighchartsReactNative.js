@@ -217,8 +217,13 @@ export default class HighchartsReactNative extends React.PureComponent {
             }}
             onMessage={
               this.props.onMessage
-                ? (event) => this.props.onMessage(event.nativeEvent.data)
-                : () => {}
+                ? (event) => {
+                  alert("Inside HighChart OnMessage");
+                  this.props.onMessage(event.nativeEvent.data)
+                }
+                : () => {
+                  alert("Inside HighChart OnMessage Empty");
+                }
             }
             source={{
               html: `<html>
