@@ -1,10 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
-import HighchartsReactNative from './dist';
+// import HighchartsReactNative from './dist';
 
-const modules = [
-  'solid-gauge'
-];
+const modules = ['solid-gauge'];
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +28,8 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <HighchartsReactNative
+        <Text>Insert Chart Here</Text>
+        {/* <HighchartsReactNative
           useCDN={true}
           styles={styles.container}
           options={this.state.chartOptions}
@@ -41,7 +40,7 @@ export default class App extends React.Component {
             alert("App.Js On Message")
             this.props.onMessage(message)
           }}
-        />
+        /> */}
       </View>
     );
   }
