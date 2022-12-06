@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
-// import HighchartsReactNative from './dist';
+import HighchartsReactNative from './dist';
 
 const modules = ['solid-gauge'];
 
