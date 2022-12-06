@@ -212,7 +212,7 @@ export default class HighchartsReactNative extends React.PureComponent {
             { width: this.state.width, height: this.state.height },
           ]}
         >
-          <Text>Insert Webview Here</Text>
+          <WebView />
         </View>
       );
     } else {
