@@ -28,19 +28,18 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Insert Chart Here</Text>
-        {/* <HighchartsReactNative
+        <HighchartsReactNative
           useCDN={true}
           styles={styles.container}
           options={this.state.chartOptions}
           devPath={'192.168.0.1:12345'}
           useSSL={true}
           modules={modules}
-          onMessage={message => {
-            alert("App.Js On Message")
-            this.props.onMessage(message)
+          onMessage={(message) => {
+            alert('App.Js On Message');
+            this.props.onMessage(message);
           }}
-        /> */}
+        />
       </View>
     );
   }
