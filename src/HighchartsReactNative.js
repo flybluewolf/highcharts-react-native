@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Dimensions, StyleSheet, Text } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import HighchartsModules from './HighchartsModules';
 
 const win = Dimensions.get('window');
-const path =
-  FileSystem.documentDirectory + 'dist/highcharts-files/highcharts.js';
+const path = FileSystem.documentDirectory + 'dist/highcharts-files/highcharts.js';
 const stringifiedScripts = {};
 
 let cdnPath = 'code.highcharts.com/';
@@ -31,7 +30,7 @@ export default class HighchartsReactNative extends React.PureComponent {
 
   setHcAssets = async (useCDN) => {
     try {
-      //await this.setLayout();
+      await this.setLayout();
       await this.addScript('highcharts', null, useCDN);
       await this.addScript('highcharts-more', null, useCDN);
       await this.addScript('highcharts-3d', null, useCDN);
@@ -47,25 +46,19 @@ export default class HighchartsReactNative extends React.PureComponent {
   };
 
   getAssetAsString = async (asset) => {
-    const downloadedModules = await FileSystem.readDirectoryAsync(
-      FileSystem.cacheDirectory
-    );
+    const downloadedModules = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory);
     let fileName = 'ExponentAsset-' + asset.hash + '.' + asset.type;
 
     if (!downloadedModules.includes(fileName)) {
       await asset.downloadAsync();
     }
 
-    return await FileSystem.readAsStringAsync(
-      FileSystem.cacheDirectory + fileName
-    );
+    return await FileSystem.readAsStringAsync(FileSystem.cacheDirectory + fileName);
   };
 
   addScript = async (name, isModule, useCDN) => {
     if (useCDN) {
-      const response = await fetch(
-        httpProto + cdnPath + (isModule ? 'modules/' : '') + name + '.js'
-      ).catch((error) => {
+      const response = await fetch(httpProto + cdnPath + (isModule ? 'modules/' : '') + name + '.js').catch((error) => {
         throw error;
       });
       stringifiedScripts[name] = await response.text();
@@ -79,15 +72,13 @@ export default class HighchartsReactNative extends React.PureComponent {
     }
   };
 
-  // setLayout = async () => {
-  //   const indexHtml = Asset.fromModule(
-  //     require('../highcharts-layout/index.html')
-  //   );
+  setLayout = async () => {
+    const indexHtml = Asset.fromModule(require('../highcharts-layout/index.html'));
 
-  //   this.setState({
-  //     layoutHTML: await this.getAssetAsString(indexHtml),
-  //   });
-  // };
+    this.setState({
+      layoutHTML: await this.getAssetAsString(indexHtml),
+    });
+  };
 
   constructor(props) {
     super(props);
@@ -108,7 +99,7 @@ export default class HighchartsReactNative extends React.PureComponent {
       height: userStyles.height || win.height,
       chartOptions: props.options,
       useCDN: props.useCDN || false,
-      modules: props.modules || ['solid-gauge'],
+      modules: props.modules || [],
       setOptions: props.setOptions || {},
       renderedOnce: false,
       hcModulesReady: false,
@@ -118,8 +109,7 @@ export default class HighchartsReactNative extends React.PureComponent {
     this.setHcAssets(this.state.useCDN);
   }
   componentDidUpdate() {
-    this.webviewRef &&
-      this.webviewRef.postMessage(this.serialize(this.props.options, true));
+    this.webviewRef && this.webviewRef.postMessage(this.serialize(this.props.options, true));
   }
   componentDidMount() {
     this.setState({ renderedOnce: true });
@@ -149,10 +139,7 @@ export default class HighchartsReactNative extends React.PureComponent {
     // replace ids with functions.
     if (!isUpdate) {
       Object.keys(hcFunctions).forEach(function (key) {
-        serializedOptions = serializedOptions.replace(
-          '"' + key + '"',
-          hcFunctions[key]
-        );
+        serializedOptions = serializedOptions.replace('"' + key + '"', hcFunctions[key]);
       });
     }
 
@@ -163,9 +150,6 @@ export default class HighchartsReactNative extends React.PureComponent {
       const scriptsPath = this.state.useCDN ? httpProto.concat(cdnPath) : path;
       const setOptions = this.state.setOptions;
       const runFirst = `
-                window.postMessage = function(${this.props.data}) {
-                  window.ReactNativeWebView.postMessage(${this.props.data});
-                };
                 window.data = \"${this.props.data ? this.props.data : null}\";
                 var modulesList = ${JSON.stringify(this.state.modules)};
                 var readable = ${JSON.stringify(stringifiedScripts)}
@@ -180,10 +164,8 @@ export default class HighchartsReactNative extends React.PureComponent {
                     }
 
                     if (redraw) {
-                        Highcharts.setOptions('${this.serialize(setOptions)}');
-                        Highcharts.chart("container", ${this.serialize(
-                          this.props.options
-                        )});
+                        Highcharts.setOptions(${this.serialize(setOptions)});
+                        Highcharts.chart("container", ${this.serialize(this.props.options)});
                     }
                 }
 
@@ -206,102 +188,14 @@ export default class HighchartsReactNative extends React.PureComponent {
 
       // Create container for the chart
       return (
-        <View
-          style={[
-            this.props.styles,
-            { width: this.state.width, height: this.state.height },
-          ]}
-        >
+        <View style={[this.props.styles, { width: this.state.width, height: this.state.height }]}>
           <WebView
             ref={(ref) => {
               this.webviewRef = ref;
             }}
-            onMessage={
-              this.props.onMessage
-                ? (event) => {
-                    alert('Inside HighChart OnMessage');
-                    this.props.onMessage(event.nativeEvent.data);
-                  }
-                : () => {
-                    alert('Inside HighChart OnMessage Empty');
-                  }
-            }
+            onMessage={this.props.onMessage ? (event) => this.props.onMessage(event.nativeEvent.data) : () => {}}
             source={{
-              html: `<html>
-                    <head>
-                      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-                      <style>
-                          #container {
-                              width:100%;
-                              height:100%;
-                              top:0;
-                              left:0;
-                              right:0;
-                              bottom:0;
-                              position:absolute;
-                              user-select: none;
-                              -webkit-user-select: none;
-                          }
-                  
-                          * {
-                              -webkit-touch-callout: none;
-                              -webkit-user-select: none; /* Disable selection/copy in UIWebView */
-                              -khtml-user-select: none;
-                              -moz-user-select: none;
-                              -ms-user-select: none;
-                              user-select: none;
-                          }
-                      </style>
-                      <script>
-                          const hcUtils = {
-                              // convert string to JSON, including functions.
-                              parseOptions: function (chartOptions) {
-                                  const parseFunction = this.parseFunction;
-                  
-                                  const options = JSON.parse(chartOptions, function (val, key) {
-                                      if (typeof key === 'string' && key.indexOf('function') > -1) {
-                                          return parseFunction(key);
-                                      } else {
-                                          return key;
-                                      }
-                                  });
-                  
-                                  return options;
-                              },
-                              // convert funtion string to function
-                              parseFunction: function (fc) {
-                  
-                                  const fcArgs = fc.match(/\((.*?)\)/)[1],
-                                      fcbody = fc.split('{');
-                  
-                                  return new Function(fcArgs, '{' + fcbody.slice(1).join('{'));
-                              }
-                          };
-                  
-                          // Communication between React app and webview. Receive chart options as string.
-                          document.addEventListener('message', function (data) {
-                              Highcharts.charts[0].update(
-                                  hcUtils.parseOptions(data.data),
-                                  true,
-                                  true,
-                                  true
-                              );
-                          });
-                  
-                          window.addEventListener('message', function (data) {
-                              Highcharts.charts[0].update(
-                                  hcUtils.parseOptions(data.data),
-                                  true,
-                                  true,
-                                  true
-                              );
-                          });
-                         </script>
-                    </head>
-                    <body>
-                        <div id="container"></div>
-                    </body>
-                  </html>`,
+              html: this.state.layoutHTML,
             }}
             injectedJavaScript={runFirst}
             originWhitelist={['*']}
@@ -315,8 +209,8 @@ export default class HighchartsReactNative extends React.PureComponent {
             allowFileAccessFromFileURLs={true}
             startInLoadingState={this.props.loader}
             style={this.props.webviewStyles}
-            // androidHardwareAccelerationDisabled
-            // {...this.props.webviewProps}
+            androidHardwareAccelerationDisabled
+            {...this.props.webviewProps}
           />
         </View>
       );
