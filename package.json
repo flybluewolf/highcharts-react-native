@@ -1,28 +1,19 @@
 {
-  "main": "index.js",
-  "name": "highcharts-react-native",
+  "name": "highcharts-dist",
   "version": "3.1.7",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject",
-    "update-highcharts": "npm install -D highcharts@latest && npx gulp update-highcharts"
-  },
-  "description": "Highcharts react native wrapper",
   "license": "SEE LICENSE IN <LICENSE>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/highcharts/highcharts-react-native.git"
+    "url": "git+https://github.com/highcharts/highcharts-react-native-official.git"
   },
+  "dependencies": {},
   "keywords": [
     "highcharts",
     "highstock",
     "highmaps",
     "react-native"
   ],
-  "author": "Highcharts",
+  "description": "Highcharts react native wrapper",
   "bugs": {
     "url": "https://github.com/highcharts/highcharts-react-native"
   },
@@ -31,25 +22,23 @@
     "Daniel Studencki <daniel.studencki@gmail.com>"
   ],
   "homepage": "https://github.com/highcharts/highcharts-react-native#readme",
+  "author": "Highcharts",
   "peerDependencies": {
-    "expo": "~45.0.0",
+    "react": "17.0.2",
+    "react-native": "0.68.2",
+    "react-native-webview": "11.18.1",
+    "metro-config": "^0.60.0",
+    "expo": "^45.0.0",
     "expo-asset": "~8.5.0",
-    "expo-file-system": "~14.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-native": "^0.68.2"
-  },
-  "dependencies": {
-    "react-native-web": "^0.17.7",
-    "react-native-webview": "^11.18.1"
+    "expo-file-system": "~14.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "babel-preset-expo": "~9.1.0",
-    "del": "^6.0.0",
-    "gulp": "^4.0.2",
-    "gulp-rename": "^2.0.0",
-    "highcharts": "^9.0.1"
-  },
-  "private": true
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4",
+    "react": "^16.4.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.4.0",
+    "react-test-renderer": "^16.4.0",
+    "react-unit": "^3.0.0"
+  }
 }
